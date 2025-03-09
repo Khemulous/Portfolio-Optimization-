@@ -10,9 +10,27 @@ import matplotlib.pyplot as plt
 import random
 ! pip install cufflinks
 
+# We read multiple stocks' data contained in "stock_prices.csv" 
+
+# We focus on U.S. stocks  
+# AMZN: Amazon Inc. 
+# JPM: JPMorgan Chase and Co.
+# META: Meta Platforms, formerly named Facebook Inc.
+# PG: Procter and Gamble (P&G) 
+# GOOG: Google (Alphabet Inc.)  
+# CAT: Caterpillar 
+# PFE: Pfizer Inc. 
+# EXC: Exelon  
+# DE: Deere & Company (John Deere) 
+# JNJ: Johnson & Johnson 
+
+
 
 prices = pd.read_csv('stock_prices.csv')
 prices
+
+# We calculate the percentage daily return
+# We perform this calculation on all stocks except for the first column which is "Date"
 
 prices1 = prices.iloc[:,1:].pct_change()*100
 prices1.replace(np.nan, 0, inplace = True)
@@ -21,18 +39,25 @@ prices1
 prices1.insert(0, 'Date', prices['Date'])
 prices1
 
+
+# Plot closing prices using plotly Express.
 plot_financial_data1(prices, 'Adjusted Closing Prices')
 
+# Plot the stocks daily returns
 plot_financial_data1(prices1, 'Percentage Daily Returns')
 
+# Plot histograms for stocks daily returns using plotly express
 figs = px.histogram(prices1.drop(columns = ['Date']))
 figs.update_layout({'plot_bgcolor': "white"})
 
+# Plot a heatmap showing the correlations between daily returns
 plt.figure(figsize = (10,8))
 sns.heatmap(prices1.drop(columns = ['Date']).corr(), annot = True, cmap = 'crest');
 
+# Plot the Pairplot between stocks daily returns
 sns.pairplot(prices1);
 
+# Function to scale stock prices based on their initial starting price
 def price_scaling(raw_prices):
     scaled_prices = raw_prices.copy()
     for i in raw_prices.columns[1:]:
@@ -40,6 +65,7 @@ def price_scaling(raw_prices):
     return scaled_prices
 
 price_scaling(prices)
+
 
 plot_financial_data1(price_scaling(prices), "Relative Collective Performance")
 
@@ -82,6 +108,16 @@ for i, stock in enumerate(scaled.columns[1:]):
     portfolio1[stock] = weights1[i] * scaled[stock] * initial_investment1
 portfolio1.round(1) 
 
+# Assuming we have $1,000,000, we would like to invest in one or more of the selected stocks
+# Creates a function that receives the following arguments: 
+      # (1) Stocks closing prices
+      # (2) Random weights 
+      # (3) Initial investment amount
+# The function will return a DataFrame that contains the following:
+      # (1) Daily value (position) of each individual stock over the specified time period
+      # (2) Total daily value of the portfolio 
+      # (3) Percentage daily return 
+
 def asset_allocation(df, weights, initial_investment):
     portfolio1 = df.copy()
     scaled_df = price_scaling(df)
@@ -93,8 +129,11 @@ def asset_allocation(df, weights, initial_investment):
     
     return portfolio1
 
+#Function that generates random weights
+
 n = len(prices.columns)-1
 
+# Let's generate random weights 
 print('The number of stocks under consideration is {}'.format(n))
 weights = generate_weights(n).round(6)
 print('Portfolio Wieghts = {}'.format(weights))
@@ -121,6 +160,7 @@ sharpe_ratio_runs.max()
 
 weight_runs1[sharpe_ratio_runs.argmax(), :]
 
+# Scale stock prices to ensure all stock values start at 1
 def price_scaling(raw_prices):
     scaled_prices = raw_prices.copy()
     for i in raw_prices.columns[1:]:
@@ -128,6 +168,8 @@ def price_scaling(raw_prices):
     return scaled_prices
 
 price_scaling(prices)
+
+# Creates an array that holds random portfolio weights
 
 def generate_weights(n):
     weights = []
@@ -145,6 +187,17 @@ for i, stock in enumerate(scaled.columns[1:]):
     portfolio1[stock] = weights1[i] * scaled[stock] * initial_investment1
 portfolio1.round(1)   
 
+# Defines the simulation engine function 
+# The function receives: 
+    # (1) portfolio weights
+    # (2) initial investment amount
+# The function performs asset allocation and calculates portfolio statistical metrics including Sharpe ratio
+# The function returns: 
+    # (1) Expected portfolio return 
+    # (2) Expected volatility 
+    # (3) Sharpe ratio 
+    # (4) Return on investment 
+    # (5) Final portfolio value in dollars
 
 def simulation_engine1(weights, initial_investment):
     portfolio1 = asset_allocation(prices, weights, initial_investment)
@@ -221,7 +274,9 @@ print('  - Return on Investment = {:.02f}%'.format(optimal_return_on_investment)
 sim_out_df = pd.DataFrame({'Volatility': volatility_runs.tolist(), 'Portfolio_Return': expected_portfolio_return_runs.tolist(), 'Sharpe_Ratio': sharpe_ratio_runs.tolist() })
 sim_out_df
 
-
+# Plots volatility vs. return for all simulation runs
+# Highlights the volatility and return that corresponds to the highest Sharpe ratio
+# Highlights the point with the highest Sharpe ratio
 fig = px.scatter(sim_out_df, x = 'Volatility', y = 'Portfolio_Return', color = 'Sharpe_Ratio', size = 'Sharpe_Ratio', hover_data = ['Sharpe_Ratio'])
 fig.add_trace(go.Scatter(x = [optimal_volatility], y = [optimal_portfolio_return], mode = 'markers', name = 'Optimal Point', marker = dict(size=[40], color = 'red')))
 fig.update_layout(coloraxis_colorbar = dict(y = .7, dtick = 5))
