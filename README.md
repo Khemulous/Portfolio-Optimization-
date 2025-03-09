@@ -1,19 +1,9 @@
 # Portfolio-Optimization-
 
 ## Overview
-This tool provides a robust framework for portfolio optimization through Monte Carlo simulation. It enables financial analysts to identify optimal asset allocations based on the Sharpe ratio, helping balance expected returns and risk.
+This project demonstrates portfolio optimization proficiency through Monte Carlo simulation. It identifies optimal asset allocations based on the Sharpe ratio, helping balance expected returns and risk.
 
-## Purpose
-The Portfolio Optimization Tool was developed to demonstrate a practical implementation of modern portfolio theory. It allows financial analysts to:
-
-- Generate randomized portfolio weight distributions
-- Calculate expected returns, volatility, and Sharpe ratios
-- Visualize the efficient frontier
-- Identify optimal portfolio allocations
-- Track portfolio performance over time
-- Compare various portfolio configurations
-
-## Features
+## Features of the program
 
 ### Data Processing
 - Imports and processes stock price data from CSV files
@@ -22,7 +12,7 @@ The Portfolio Optimization Tool was developed to demonstrate a practical impleme
 - Generates correlation heatmaps for asset relationships
 
 ### Portfolio Construction
-- Generates random portfolio weights that sum to 1
+- Generates random portfolio weights 
 - Allocates investment amounts across multiple assets
 - Tracks portfolio value over time
 - Calculates portfolio returns and volatility
@@ -45,7 +35,6 @@ The Portfolio Optimization Tool was developed to demonstrate a practical impleme
 - Highlights optimal portfolio allocations
 - Shows portfolio performance over time
 
-## Getting Started
 
 ### Prerequisites
 - Python 3.x
@@ -54,27 +43,6 @@ The Portfolio Optimization Tool was developed to demonstrate a practical impleme
 - matplotlib
 - seaborn
 - plotly
-
-### Installation
-```
-pip install pandas numpy matplotlib seaborn plotly
-```
-
-### Data Requirements
-The tool expects a CSV file named 'stock_prices.csv' with the following structure:
-- First column: 'Date' (in a format pandas can parse)
-- Subsequent columns: Stock/asset prices with column headers as ticker symbols
-
-### Basic Usage
-```python
-# Import the tool
-# Run Monte Carlo simulation
-sim = 100  # Number of simulations
-investment = 1000000  # Initial investment amount
-
-# Execute simulations
-# Review results to find optimal portfolio allocation
-```
 
 ## Key Functions
 
@@ -100,8 +68,8 @@ Future versions aim to incorporate machine learning algorithms to provide predic
 ## Limitations
 - The tool currently uses historical data only without predictive capabilities
 - Monte Carlo simulations assume normal distribution of returns
-- The optimization is based solely on the Sharpe ratio without considering other factors
+- The optimization is based solely on the Sharpe ratio without considering other factors such as the Sortino, Treynor, Jensen's Alpha, and M2
 - No transaction costs or taxes are included in the calculations
 
-## Example Output
+## Output
 The tool generates visualizations of the efficient frontier, highlighting the optimal portfolio based on the Sharpe ratio. It provides detailed metrics for the optimal portfolio including expected annual return, volatility, Sharpe ratio, final value, and return on investment.
