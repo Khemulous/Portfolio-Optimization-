@@ -1,7 +1,5 @@
 # Portfolio-Optimization-
 
-# Portfolio Optimization Tool
-
 ## Overview
 This tool provides a robust framework for portfolio optimization through Monte Carlo simulation. It enables financial analysts to identify optimal asset allocations based on the Sharpe ratio, helping balance expected returns and risk.
 
